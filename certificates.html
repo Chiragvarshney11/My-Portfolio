@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chirag | Certificates</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #0f172a, #020617);
+            color: white;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #38bdf8;
+            margin-bottom: 40px;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            text-decoration: none;
+            color: #38bdf8;
+
+        }
+
+        .back-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #38bdf8;
+            transition: 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+        }
+
+
+        /* CERT GRID */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .cert-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s ease;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .cert-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="/" class="back-btn">← Back to Portfolio</a>
+
+
+    <h1>My Certificates 📜</h1>
+
+    <div class="cert-grid">
+
+        <div class="cert-card">
+            <img src="C:\html\css\basic cert.png" alt="Certificate 2">
+        </div>
+        <div class="cert-card">
+            <img src="C:\html\css\Intermediate cert.png" alt="Certificate 1">
+        </div>
+
+    </div>
+
+</body>
+
+</html>
