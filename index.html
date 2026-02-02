@@ -273,7 +273,7 @@
     <!-- HERO -->
     <section class="hero">
         <div class="profile-pic scroll-photo" onclick="openAchievements()">
-            <img src="profile.jpeg" alt="Chirag Varshney">
+            <img src="C:\html\css\profile.jpeg" alt="Chirag Varshney">
         </div>
         <h1>CHIRAG VARSHNEY</h1>
         <h4>Student of GLA University</h4>
@@ -414,28 +414,33 @@
         }
 
         /* MAX STREAK AUTO +1 DAILY */
-        const BASE_STREAK = 26;
-        const today = new Date().toDateString();
+        /* ===== MAX STREAK (FINAL & CORRECT) ===== */
 
-        let streak = localStorage.getItem("maxStreak");
-        let lastDate = localStorage.getItem("lastUpdated");
+        // Aaj jo number dikhana hai
+        const BASE_STREAK = 27;
 
-        if (!streak || !lastDate) {
-            localStorage.setItem("maxStreak", BASE_STREAK);
-            localStorage.setItem("lastUpdated", today);
-            document.getElementById("streak").innerText = BASE_STREAK;
-        } else {
-            let s = parseInt(streak);
-            if (lastDate !== today) {
-                s += 1;
-                localStorage.setItem("maxStreak", s);
-                localStorage.setItem("lastUpdated", today);
-            }
-            document.getElementById("streak").innerText = s;
-        }
+        // Aaj ki REAL date automatically le lo (no hardcode)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // START_DATE = Aaj
+        const START_DATE = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        );
+
+        // Difference (aaj = 0)
+        const diffDays = Math.floor(
+            (today - START_DATE) / (1000 * 60 * 60 * 24)
+        );
+
+        // Final streak
+        document.getElementById("streak").innerText = BASE_STREAK + diffDays;
+
+
     </script>
 
 </body>
 
 </html>
-
