@@ -6,40 +6,6 @@
     <title>Chirag | Growth Dashboard</title>
 
     <style>
-        /* PROFILE PHOTO */
-        .profile-pic {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            padding: 5px;
-            background: linear-gradient(135deg, #38bdf8, #2563eb);
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .profile-pic img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #020617;
-        }
-
-        /* FLOAT ANIMATION */
-        @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -60,23 +26,48 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
+        }
+
+        /* PROFILE PHOTO */
+        .profile-pic {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            margin-bottom: 40px;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .scroll-photo {
+            transition: transform .4s ease, box-shadow .4s ease;
+        }
+
+        .scroll-photo.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 30px #38bdf8;
         }
 
         .hero h1 {
             font-size: 4rem;
             text-shadow: 0 0 25px #38bdf8;
-            animation: glow 2s infinite alternate;
+            margin-top: 15px;
         }
 
         .hero h4 {
             font-size: 2rem;
-            text-shadow: 0 0 20px #38bff871;
-            animation: glow 2s infinite alternate;
+            opacity: .9;
         }
 
         .hero p {
-            opacity: 0.8;
-            margin-top: 10px;
+            opacity: .8
         }
 
         /* GLASS */
@@ -85,7 +76,7 @@
             margin: 60px auto;
             padding: 40px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, .08);
             backdrop-filter: blur(14px);
             transform: translateY(40px);
             opacity: 0;
@@ -99,12 +90,12 @@
 
         h2 {
             color: #38bdf8;
-            margin-bottom: 20px;
+            margin-bottom: 20px
         }
 
         /* SKILLS */
         .skill {
-            margin-bottom: 20px;
+            margin-bottom: 20px
         }
 
         .bar {
@@ -122,20 +113,12 @@
             transition: 1.5s ease;
         }
 
-        /* TIMELINE */
-        .timeline li {
-            margin: 10px 0;
-        }
-
         /* STATS */
         .stats {
             display: flex;
             justify-content: space-around;
-            padding: 60px;
-            background: #020617;
-        }
-
-        .stats div {
+            gap: 40px;
+            flex-wrap: wrap;
             text-align: center;
         }
 
@@ -144,111 +127,85 @@
             color: #38bdf8;
         }
 
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 20px;
-            opacity: 0.7;
-        }
-
-        /* ANIMATIONS */
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #38bdf8;
-            }
-
-            to {
-                text-shadow: 0 0 30px #38bdf8;
-            }
-        }
-
-        .scroll-photo {
-            transition: transform 0.6s cubic-bezier(.4, 0, .2, 1);
-        }
-
-        /* MODAL BACKGROUND */
+        /* MODAL */
         .modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
         }
 
-        /* MODAL BOX */
         .modal-content {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, .1);
             padding: 40px;
             border-radius: 20px;
-            width: 90%;
             max-width: 500px;
-            animation: popUp 0.5s ease;
             position: relative;
         }
 
-        .modal-content h2 {
-            color: #38bdf8;
-            margin-bottom: 20px;
-        }
-
-        /* ACHIEVEMENTS LIST */
-        .achievements li {
-            margin: 12px 0;
-            font-size: 1.05rem;
-            opacity: 0;
-            animation: slideIn 0.5s ease forwards;
-        }
-
-        .achievements li:nth-child(1) {
-            animation-delay: 0.1s
-        }
-
-        .achievements li:nth-child(2) {
-            animation-delay: 0.2s
-        }
-
-        .achievements li:nth-child(3) {
-            animation-delay: 0.3s
-        }
-
-        .achievements li:nth-child(4) {
-            animation-delay: 0.4s
-        }
-
-        .achievements li:nth-child(5) {
-            animation-delay: 0.5s
-        }
-
-        /* SCROLL ANIMATED PROFILE */
-        .scroll-photo {
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .scroll-photo.active {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 0 35px #38bdf8;
-        }
-
-        /* CLOSE BUTTON */
         .close {
             position: absolute;
-            top: 15px;
             right: 20px;
-            font-size: 24px;
+            top: 15px;
             cursor: pointer;
-            color: #fff;
+            font-size: 24px;
         }
 
-        /* ANIMATIONS */
+        /* SOCIAL */
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            padding: 12px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            opacity: .7;
+        }
+
+        /* MODAL ANIMATION */
+        .modal-content {
+            animation: popUp 0.4s ease;
+        }
+
+        /* ACHIEVEMENT LIST ANIMATION */
+        .modal-content ul li {
+            opacity: 0;
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .modal-content ul li:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .modal-content ul li:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .modal-content ul li:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        /* KEYFRAMES */
         @keyframes popUp {
             from {
-                transform: scale(0.7);
+                transform: scale(0.8);
                 opacity: 0;
             }
 
@@ -270,227 +227,214 @@
             }
         }
 
-        /* SOCIAL SECTION */
-        .social {
-            text-align: center;
+        /* LEETCODE LINK */
+        .lc-link {
+            color: #38bdf8;
+            text-decoration: none;
+            transition: 0.3s ease;
         }
 
-        .social-links {
+        .lc-link:hover {
+            color: #fff;
+            text-shadow: 0 0 15px #38bdf8;
+            transform: scale(1.05);
+            display: inline-block;
+        }
+
+        .cert-btn-wrapper {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
+            margin: 40px 0;
         }
 
-        .social-links a {
-            padding: 12px 22px;
+        .cert-btn {
+            padding: 14px 30px;
             border-radius: 30px;
             text-decoration: none;
             color: white;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
             transition: 0.3s ease;
-            font-size: 1rem;
-            box-shadow: 0 0 0 transparent;
         }
 
-        .social-links a:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px #38bdf8;
-            background: linear-gradient(135deg, #38bdf8, #2563eb);
+        .cert-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.8);
         }
     </style>
 </head>
 
 <body>
+    <div class="cert-btn-wrapper">
+        <a href="certificates.html" class="cert-btn">View Certificates 📜</a>
+    </div>
 
+    <!-- HERO -->
     <section class="hero">
-        <div class="profile-pic" onclick="openAchievements()">
-            <img src="profile.jpeg"
-                alt="Chirag Varshney">
+        <div class="profile-pic scroll-photo" onclick="openAchievements()">
+            <img src="C:\html\css\profile.jpeg" alt="Chirag Varshney">
         </div>
-
         <h1>CHIRAG VARSHNEY</h1>
-        <h4>Student of GLA UNIVERSITY</h4>
+        <h4>Student of GLA University</h4>
         <p>Progress > Perfection 🚀</p>
     </section>
 
-
-
+    <!-- ABOUT -->
     <section class="glass reveal">
         <h2>About Me</h2>
         <p>
-            I am a focused learner building myself through
-            discipline, consistency and deep learning.
-            Every day I upgrade my mindset & skills.
+            I am a disciplined learner focused on building strong foundations
+            in programming and problem-solving. I regularly practice DSA on
+            LeetCode using Java and Python, and I am exploring Machine Learning.
+            Alongside coding, I also work as a video editor, creating engaging
+            content for social media and projects.
         </p>
     </section>
 
+    <!-- SKILLS -->
     <section class="glass reveal">
-        <h2>Skills Progress</h2>
-
-        <div class="skill">
-            <span>HTML & CSS</span>
-            <div class="bar">
+        <h2>Skills</h2>
+        <div class="skill">HTML & CSS<div class="bar">
                 <div class="progress" data-width="80%"></div>
             </div>
         </div>
-
-        <div class="skill">
-            <span>Java</span>
-            <div class="bar">
+        <div class="skill">Java<div class="bar">
                 <div class="progress" data-width="65%"></div>
             </div>
         </div>
-
-        <div class="skill">
-            <span>Python</span>
-            <div class="bar">
+        <div class="skill">Python<div class="bar">
                 <div class="progress" data-width="60%"></div>
             </div>
         </div>
-
-        <div class="skill">
-            <span>Machine Learning</span>
-            <div class="bar">
+        <div class="skill">Machine Learning<div class="bar">
                 <div class="progress" data-width="45%"></div>
             </div>
         </div>
     </section>
 
-    <section class="glass reveal timeline">
-        <h2>Growth Timeline</h2>
+    <!-- PROJECTS -->
+    <section class="glass reveal">
+        <h2>Projects</h2>
         <ul>
-            <li>🚀 Started Coding Journey</li>
-            <li>📘 Learning DSA & Core Java</li>
-            <li>🤖 Exploring Machine Learning</li>
-            <li>🔥 Building Real Projects</li>
+            <li>🚀 Personal Portfolio Website (Live on Vercel)</li>
+            <li>🧮 DSA Practice Programs (Java)</li>
+            <li>🤖 Machine Learning Practice Models</li>
+            <li>🎬 Video Editing Projects & Reels</li>
         </ul>
     </section>
 
-    <section class="stats">
-        <div>
-            <h3 class="counter" data-target="25">0</h3>
-            <p>Days of Consistency</p>
-        </div>
-        <div>
-            <h3 class="counter" data-target="65">0</h3>
-            <p>Problems Solved</p>
-        </div>
-        <div>
-            <h3 class="counter" data-target="1">0</h3>
-            <p>Projects</p>
-        </div>
-        <!-- ACHIEVEMENTS MODAL -->
-        <div id="achievementModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeAchievements()">×</span>
-                <h2>My Achievements 🏆</h2>
+    <!-- DSA STATS -->
+    <section class="glass reveal">
+        <h2>DSA Progress</h2>
+        <div class="stats">
+            <div>
+                <h3>
+                    <a href="https://leetcode.com/u/Chiragvarshney_official24/" target="_blank" class="lc-link"> LC </a>
+                </h3>
+                <p> Check Profile Here </p>
 
-                <ul class="achievements">
-                    <li>🔥 25+ Days Coding Consistency</li>
-                    <li>💻 65+ DSA Problems Solved</li>
-                    <li>🚀 Built My First Portfolio Website</li>
-                    <li>📘 Learning Core Java & DSA</li>
-                    <li>🤖 Started Machine Learning Journey</li>
-                </ul>
+            </div>
+
+            <div>
+                <h3 id="streak">26</h3>
+                <p>Max Coding Streak 🔥</p>
             </div>
         </div>
-
     </section>
-    <section class="glass reveal social">
-        <h2>Connect With Me</h2>
 
+    <!-- CONTACT -->
+    <section class="glass reveal">
+        <h2>Connect With Me</h2>
         <div class="social-links">
-            <a href="https://github.com/Chiragvarshney11" target="_blank">🐙 GitHub</a>
-            <a href="https://www.linkedin.com/in/chirag-varshney-29aa55336/" target="_blank">💼 LinkedIn</a>
-            <a href="https://www.instagram.com/iamcv.07/" target="_blank">📸 Instagram</a>
-            <a href="https://www.facebook.com/chirag.varshney.5055" target="_blank">📘 Facebook</a>
-            <a href="mailto:cvarshney609@gmail.com">✉️ Gmail</a>
+            <a href="https://github.com/Chiragvarshney11" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/chirag-varshney-29aa55336/" target="_blank">LinkedIn</a>
+            <a href="https://www.instagram.com/iamcv.07/" target="_blank">Instagram</a>
+            <a href="mailto:cvarshney609@gmail.com">Gmail</a>
         </div>
     </section>
 
-    <footer>
-        © 2026 Chirag | Built with Discipline 💪
-    </footer>
+    <footer>© 2026 Chirag | Built with Discipline 💪</footer>
+
+    <!-- ACHIEVEMENTS MODAL -->
+    <div id="achievementModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAchievements()">×</span>
+            <h2>Achievements 🏆</h2>
+            <ul>
+                <li>🔥 26+ days coding consistency</li>
+                <li>💻 65+ LeetCode problems solved</li>
+                <li>🚀 Portfolio deployed on Vercel</li>
+            </ul>
+        </div>
+    </div>
 
     <script>
+        /* MODAL */
         function openAchievements() {
             document.getElementById("achievementModal").style.display = "flex";
         }
-
         function closeAchievements() {
             document.getElementById("achievementModal").style.display = "none";
         }
 
-        /* Close on outside click */
-        window.addEventListener("click", (e) => {
-            const modal = document.getElementById("achievementModal");
-            if (e.target === modal) {
-                closeAchievements();
-            }
-        });
-        const profilePhoto = document.querySelector(".scroll-photo");
-
-        window.addEventListener("scroll", () => {
-            const scrollY = window.scrollY;
-
-            if (scrollY > 80) {
-                profilePhoto.classList.add("active");
-            } else {
-                profilePhoto.classList.remove("active");
-            }
-        });
-
-
-        /* REVEAL ANIMATION */
+        /* SCROLL EFFECTS */
         const reveals = document.querySelectorAll(".reveal");
-        const progresses = document.querySelectorAll(".progress");
-        const counters = document.querySelectorAll(".counter");
+        const bars = document.querySelectorAll(".progress");
+        const photo = document.querySelector(".scroll-photo");
 
         window.addEventListener("scroll", () => {
-            reveals.forEach(section => {
-                const top = section.getBoundingClientRect().top;
-                if (top < window.innerHeight - 100) {
-                    section.classList.add("show");
+            reveals.forEach(sec => {
+                if (sec.getBoundingClientRect().top < window.innerHeight - 100) {
+                    sec.classList.add("show");
                 }
             });
-
-            progresses.forEach(bar => {
-                const top = bar.getBoundingClientRect().top;
-                if (top < window.innerHeight) {
+            bars.forEach(bar => {
+                if (bar.getBoundingClientRect().top < window.innerHeight) {
                     bar.style.width = bar.dataset.width;
                 }
             });
-
-            counters.forEach(counter => {
-                if (counter.innerText == "0") {
-                    const top = counter.getBoundingClientRect().top;
-                    if (top < window.innerHeight) {
-                        let count = 0;
-                        const target = +counter.dataset.target;
-                        const speed = target / 100;
-
-                        const update = () => {
-                            if (count < target) {
-                                count += speed;
-                                counter.innerText = Math.ceil(count);
-                                setTimeout(update, 20);
-                            } else {
-                                counter.innerText = target;
-                            }
-                        };
-                        update();
-                    }
-                }
-            });
+            if (window.scrollY > 80) {
+                photo.classList.add("active");
+            } else {
+                photo.classList.remove("active");
+            }
         });
+        function openAchievements() {
+            const modal = document.getElementById("achievementModal");
+            modal.style.display = "flex";
+
+            // reset animations
+            const items = modal.querySelectorAll("li");
+            items.forEach(li => {
+                li.style.animation = "none";
+                li.offsetHeight; // reflow
+                li.style.animation = "";
+            });
+        }
+
+        /* MAX STREAK AUTO +1 DAILY */
+        const BASE_STREAK = 26;
+        const today = new Date().toDateString();
+
+        let streak = localStorage.getItem("maxStreak");
+        let lastDate = localStorage.getItem("lastUpdated");
+
+        if (!streak || !lastDate) {
+            localStorage.setItem("maxStreak", BASE_STREAK);
+            localStorage.setItem("lastUpdated", today);
+            document.getElementById("streak").innerText = BASE_STREAK;
+        } else {
+            let s = parseInt(streak);
+            if (lastDate !== today) {
+                s += 1;
+                localStorage.setItem("maxStreak", s);
+                localStorage.setItem("lastUpdated", today);
+            }
+            document.getElementById("streak").innerText = s;
+        }
     </script>
 
 </body>
 
 </html>
-
-
-
