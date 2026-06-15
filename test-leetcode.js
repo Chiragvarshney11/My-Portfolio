@@ -96,3 +96,10 @@ async function fetchLeetCodeCalendar(username) {
   console.log("Last 10 entries:");
   console.table(data.slice(-10));
 })();
+
+
+catch (error) {
+  console.error("Full Error:", error);
+  console.error("Message:", error.message);
+  return [];
+}
