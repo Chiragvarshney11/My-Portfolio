@@ -1,0 +1,18 @@
+[
+  {
+    "id": "cert-basic",
+    "title": "Basic Level Certificate",
+    "issuer": "LeetCode",
+    "date": "2026",
+    "link": "",
+    "filename": "basic cert.png"
+  },
+  {
+    "id": "cert-inter",
+    "title": "Intermediate Level Certificate",
+    "issuer": "LeetCode",
+    "date": "2026",
+    "link": "",
+    "filename": "Intermediate cert.png"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "heroSub": "Student · GLA University · DSA | ML | Video Editing",
+  "heroTagline": "Progress > Perfection 🚀",
+  "about": "I am a disciplined learner focused on building strong foundations in programming and problem-solving. I regularly practice DSA on LeetCode using Java and Python, and I am exploring Machine Learning. Alongside coding, I work as a video editor, creating engaging content for social media and projects.",
+  "skills": {
+    "html": 80,
+    "java": 65,
+    "python": 60,
+    "ml": 45,
+    "video": 75
+  },
+  "streak": 58,
+  "projects": [
+    {
+      "title": "Personal Portfolio",
+      "desc": "This very website — animated glassmorphism design, live LeetCode stats, deployed on Vercel."
+    },
+    {
+      "title": "DSA Practice (Java)",
+      "desc": "Structured problem-solving on arrays, trees, graphs, DP and more using Java."
+    }
+  ]
+}
