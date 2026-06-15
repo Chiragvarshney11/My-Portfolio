@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chirag | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    :root { --sky:#38bdf8; --blue:#2563eb; --green:#22c55e; --red:#ef4444; --glass:rgba(255,255,255,.07); }
+
+    body { background:radial-gradient(circle at 20% 0%,#0c1f35,#020617 60%); color:#fff; min-height:100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; gap:0; padding:20px;
+    }
+    .login-card {
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+      border-radius:24px; padding:48px 44px; width:min(400px,95%);
+      backdrop-filter:blur(18px); text-align:center;
+    }
+    .login-card h1 { font-size:1.8rem; margin-bottom:6px; background:linear-gradient(135deg,#fff,var(--sky)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .login-card p  { opacity:.5; font-size:.9rem; margin-bottom:32px; }
+    .login-card input {
+      width:100%; padding:14px 18px; border-radius:12px; border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.06); color:#fff; font-size:1rem; outline:none; margin-bottom:16px; transition:.3s;
+    }
+    .login-card input:focus { border-color:var(--sky); box-shadow:0 0 0 3px rgba(56,189,248,.15); }
+    .login-card button {
+      width:100%; padding:14px; border-radius:12px; border:none; cursor:pointer; font-size:1rem; font-weight:600;
+      background:linear-gradient(135deg,var(--sky),var(--blue)); color:#fff; transition:.3s;
+    }
+    .login-card button:hover { transform:translateY(-2px); box-shadow:0 0 24px rgba(56,189,248,.4); }
+    .login-error { color:var(--red); font-size:.85rem; margin-top:10px; display:none; }
+
+    /* ── DASHBOARD ── */
+    #dashboard { display:none; }
+    header {
+      position:sticky; top:0; z-index:50;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+      padding:16px 36px; background:rgba(2,6,23,.8); backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(56,189,248,.15);
+    }
+    header h2 { font-size:1.2rem; background:linear-gradient(90deg,var(--sky),var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .header-actions { display:flex; gap:12px; align-items:center; }
+    .btn-sm {
+      padding:9px 20px; border-radius:20px; border:none; cursor:pointer; font-size:.85rem; font-weight:600;
+      transition:.3s; text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+    }
+    .btn-outline { background:transparent; color:var(--sky); border:1px solid rgba(56,189,248,.4); }
+    .btn-outline:hover { background:rgba(56,189,248,.1); }
+    .btn-danger { background:rgba(239,68,68,.15); color:var(--red); border:1px solid rgba(239,68,68,.3); }
+    .btn-danger:hover { background:rgba(239,68,68,.3); }
+
+    main { max-width:1100px; margin:0 auto; padding:40px 24px; }
+
+    /* ── STATS BAR ── */
+    .stats-row { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:40px; }
+    .stat-pill {
+      flex:1; min-width:160px; background:var(--glass); border:1px solid rgba(255,255,255,.1);
+      border-radius:14px; padding:20px; text-align:center;
+    }
+    .stat-pill .num { font-size:2rem; font-weight:700; color:var(--sky); }
+    .stat-pill .lbl { font-size:.8rem; opacity:.55; margin-top:4px; }
+
+    /* ── UPLOAD FORM ── */
+    .panel { background:var(--glass); border:1px solid rgba(255,255,255,.1); border-radius:20px; padding:32px; margin-bottom:36px; }
+    .panel h3 { font-size:1.1rem; color:var(--sky); margin-bottom:24px; display:flex; align-items:center; gap:8px; }
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label { font-size:.82rem; opacity:.6; }
+    .form-group input {
+      padding:11px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.06); color:#fff; font-size:.9rem; outline:none; transition:.3s;
+    }
+    .form-group input:focus { border-color:var(--sky); }
+
+    /* Drop zone */
+    .drop-zone {
+      border:2px dashed rgba(56,189,248,.35); border-radius:14px; padding:36px;
+      text-align:center; cursor:pointer; transition:.3s; margin:20px 0; position:relative;
+    }
+    .drop-zone.dragover { border-color:var(--sky); background:rgba(56,189,248,.08); }
+    .drop-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .drop-zone .dz-icon { font-size:2.4rem; margin-bottom:8px; }
+    .drop-zone p { opacity:.55; font-size:.9rem; }
+    .drop-zone .file-name { color:var(--sky); font-size:.9rem; margin-top:6px; }
+
+    .upload-btn {
+      display:flex; justify-content:center; margin-top:4px;
+    }
+    .btn-primary {
+      padding:13px 32px; border-radius:30px; border:none; cursor:pointer; font-size:1rem; font-weight:600;
+      background:linear-gradient(135deg,var(--sky),var(--blue)); color:#fff; transition:.3s;
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 28px rgba(56,189,248,.4); }
+    .btn-primary:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+    /* Toast */
+    #toast {
+      position:fixed; bottom:28px; right:28px; padding:14px 24px;
+      border-radius:12px; font-size:.9rem; font-weight:600; z-index:999;
+      transform:translateY(80px); opacity:0; transition:.4s cubic-bezier(.25,.46,.45,.94);
+      pointer-events:none;
+    }
+    #toast.show { transform:translateY(0); opacity:1; }
+    #toast.success { background:rgba(34,197,94,.9); color:#fff; }
+    #toast.error   { background:rgba(239,68,68,.9);  color:#fff; }
+
+    /* ── CERT CARDS ── */
+    .cert-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:22px; }
+    .cert-card {
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+      border-radius:16px; overflow:hidden; transition:.3s;
+    }
+    .cert-card:hover { border-color:rgba(56,189,248,.3); transform:translateY(-4px); }
+    .cert-thumb { width:100%; aspect-ratio:4/3; background:#0a1628; overflow:hidden; }
+    .cert-thumb img { width:100%; height:100%; object-fit:cover; }
+    .cert-body { padding:16px; }
+    .cert-body h4 { font-size:.95rem; font-weight:600; margin-bottom:4px; }
+    .cert-body .meta { font-size:.78rem; opacity:.45; margin-bottom:12px; }
+    .del-btn {
+      display:inline-flex; align-items:center; gap:5px; padding:7px 14px;
+      border-radius:20px; border:1px solid rgba(239,68,68,.35); background:rgba(239,68,68,.08);
+      color:var(--red); font-size:.8rem; cursor:pointer; transition:.25s;
+    }
+    .del-btn:hover { background:rgba(239,68,68,.25); }
+
+    /* Empty */
+    .empty-state { text-align:center; padding:60px; opacity:.35; grid-column:1/-1; }
+    .empty-state .empty-icon { font-size:3rem; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>🔐 Admin Panel</h1>
+    <p>Chirag's Portfolio Dashboard</p>
+    <input type="password" id="pass-input" placeholder="Enter admin password" autocomplete="current-password">
+    <button onclick="doLogin()">Login →</button>
+    <p class="login-error" id="login-error">❌ Wrong password. Try again.</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <h2>📊 Admin Dashboard</h2>
+    <div class="header-actions">
+      <a href="/" class="btn-sm btn-outline">🌐 View Portfolio</a>
+      <button class="btn-sm btn-danger" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-pill">
+        <div class="num" id="st-total">–</div>
+        <div class="lbl">Total Certificates</div>
+      </div>
+      <div class="stat-pill">
+        <div class="num" id="st-solved" style="color:#22c55e">–</div>
+        <div class="lbl">LeetCode Solved</div>
+      </div>
+      <div class="stat-pill">
+        <div class="num" id="st-streak" style="color:#f97316">–</div>
+        <div class="lbl">Current Streak 🔥</div>
+      </div>
+      <div class="stat-pill">
+        <div class="num" id="st-rank" style="color:#a78bfa">–</div>
+        <div class="lbl">Global Rank 🌍</div>
+      </div>
+    </div>
+
+    <!-- Upload Certificate -->
+    <div class="panel">
+      <h3>➕ Upload New Certificate</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Certificate Title *</label>
+          <input type="text" id="f-title" placeholder="e.g. Java Basics">
+        </div>
+        <div class="form-group">
+          <label>Issuing Organization</label>
+          <input type="text" id="f-issuer" placeholder="e.g. Coursera">
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="text" id="f-date" placeholder="e.g. June 2026">
+        </div>
+        <div class="form-group">
+          <label>Credential Link (optional)</label>
+          <input type="url" id="f-link" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="f-image" accept="image/*" onchange="handleFileSelect(this)">
+        <div class="dz-icon">📁</div>
+        <p>Drag &amp; drop image here or <strong>click to browse</strong></p>
+        <p class="file-name" id="file-name-display">No file chosen</p>
+      </div>
+
+      <div class="upload-btn">
+        <button class="btn-primary" id="upload-btn" onclick="uploadCert()">Upload Certificate 🚀</button>
+      </div>
+    </div>
+
+    <!-- Existing Certs -->
+    <div class="panel">
+      <h3>📜 Manage Certificates</h3>
+      <div class="cert-grid" id="admin-cert-grid">
+        <div class="empty-state"><div class="empty-icon">⏳</div><p>Loading…</p></div>
+      </div>
+    </div>
+
+    <!-- ✏️ EDIT PORTFOLIO TEXT -->
+    <div class="panel" id="text-editor-panel">
+      <h3>✏️ Edit Portfolio Text</h3>
+      <div class="form-grid">
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Hero Subtitle (below name)</label>
+          <input type="text" id="te-sub" placeholder="Student · GLA University · DSA | ML | Video Editing">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Hero Tagline</label>
+          <input type="text" id="te-tagline" placeholder="Progress > Perfection 🚀">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>About Me Text</label>
+          <textarea id="te-about" rows="4" style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:.9rem;outline:none;resize:vertical;transition:.3s;" placeholder="Write about yourself…"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Skill: HTML & CSS (%)</label>
+          <input type="number" id="te-skill-html" min="0" max="100" placeholder="80">
+        </div>
+        <div class="form-group">
+          <label>Skill: Java (%)</label>
+          <input type="number" id="te-skill-java" min="0" max="100" placeholder="65">
+        </div>
+        <div class="form-group">
+          <label>Skill: Python (%)</label>
+          <input type="number" id="te-skill-python" min="0" max="100" placeholder="60">
+        </div>
+        <div class="form-group">
+          <label>Skill: Machine Learning (%)</label>
+          <input type="number" id="te-skill-ml" min="0" max="100" placeholder="45">
+        </div>
+        <div class="form-group">
+          <label>Skill: Video Editing (%)</label>
+          <input type="number" id="te-skill-video" min="0" max="100" placeholder="75">
+        </div>
+        <div class="form-group">
+          <label>Max Coding Streak (days)</label>
+          <input type="number" id="te-streak" min="0" placeholder="27">
+        </div>
+
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Project 1 Title</label>
+          <input type="text" id="te-proj1-title" placeholder="Personal Portfolio">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Project 1 Description</label>
+          <input type="text" id="te-proj1-desc" placeholder="This very website…">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Project 2 Title</label>
+          <input type="text" id="te-proj2-title" placeholder="DSA Practice (Java)">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Project 2 Description</label>
+          <input type="text" id="te-proj2-desc" placeholder="Structured problem-solving…">
+        </div>
+      </div>
+
+      <div class="upload-btn" style="margin-top:24px;">
+        <button class="btn-primary" id="save-text-btn" onclick="savePortfolioText()">💾 Save Changes</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const TOKEN_KEY = 'cv_admin_token';
+  let authToken   = localStorage.getItem(TOKEN_KEY);
+
+  // ── Auto-login if token already stored ──────────────────────────────────
+  if (authToken) showDashboard();
+
+  // ── Login ────────────────────────────────────────────────────────────────
+  document.getElementById('pass-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+  async function doLogin() {
+    const pw = document.getElementById('pass-input').value.trim();
+    if (!pw) return;
+    try {
+      const res  = await fetch('/api/auth/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ password: pw })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error();
+      authToken = data.token;
+      localStorage.setItem(TOKEN_KEY, authToken);
+      showDashboard();
+    } catch {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+
+  function doLogout() {
+    localStorage.removeItem(TOKEN_KEY);
+    authToken = null;
+    document.getElementById('dashboard').style.display    = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+
+  function showDashboard() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display    = 'block';
+    loadStats();
+    loadCerts();
+    loadPortfolioText();
+  }
+
+  // ── Toast ────────────────────────────────────────────────────────────────
+  function toast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 3200);
+  }
+
+  // ── Stats ────────────────────────────────────────────────────────────────
+  async function loadStats() {
+    try {
+      const res  = await fetch('/api/leetcode-stats');
+      const data = await res.json();
+      document.getElementById('st-solved').textContent = data.totalSolved ?? '–';
+      document.getElementById('st-streak').textContent = data.currentStreak ?? '–';
+      document.getElementById('st-rank').textContent   = data.ranking ? '#' + data.ranking.toLocaleString() : '–';
+    } catch { /* ignore */ }
+  }
+
+  // ── Certs ────────────────────────────────────────────────────────────────
+  async function loadCerts() {
+    const grid = document.getElementById('admin-cert-grid');
+    try {
+      const res   = await fetch('/api/certificates');
+      const certs = await res.json();
+
+      document.getElementById('st-total').textContent = certs.length;
+
+      if (!certs.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📭</div><p>No certificates yet. Upload one above!</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = '';
+      certs.forEach(cert => {
+        const src = cert.id.startsWith('cert-')
+          ? '/' + cert.filename
+          : '/uploads/' + cert.filename;
+
+        const card = document.createElement('div');
+        card.className = 'cert-card';
+        card.id = 'cert-' + cert.id;
+        card.innerHTML = `
+          <div class="cert-thumb"><img src="${src}" alt="${cert.title}" loading="lazy"></div>
+          <div class="cert-body">
+            <h4>${cert.title}</h4>
+            <div class="meta">${cert.issuer || ''} ${cert.date ? '· ' + cert.date : ''}</div>
+            <button class="del-btn" onclick="deleteCert('${cert.id}', this)">🗑️ Delete</button>
+          </div>`;
+        grid.appendChild(card);
+      });
+    } catch {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><p style="color:#ef4444">Failed to load certificates.</p></div>`;
+    }
+  }
+
+  // ── File picker ──────────────────────────────────────────────────────────
+  function handleFileSelect(input) {
+    const name = input.files[0]?.name || 'No file chosen';
+    document.getElementById('file-name-display').textContent = name;
+  }
+
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave',()=> dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const dt = new DataTransfer(); dt.items.add(file);
+      document.getElementById('f-image').files = dt.files;
+      document.getElementById('file-name-display').textContent = file.name;
+    }
+  });
+
+  // ── Upload ───────────────────────────────────────────────────────────────
+  async function uploadCert() {
+    const title  = document.getElementById('f-title').value.trim();
+    const issuer = document.getElementById('f-issuer').value.trim();
+    const date   = document.getElementById('f-date').value.trim();
+    const link   = document.getElementById('f-link').value.trim();
+    const file   = document.getElementById('f-image').files[0];
+
+    if (!title) { toast('Please enter a certificate title.', 'error'); return; }
+    if (!file)  { toast('Please choose an image file.', 'error'); return; }
+
+    const btn = document.getElementById('upload-btn');
+    btn.disabled = true; btn.textContent = 'Uploading…';
+
+    const fd = new FormData();
+    fd.append('title',  title);
+    fd.append('issuer', issuer);
+    fd.append('date',   date);
+    fd.append('link',   link);
+    fd.append('image',  file);
+
+    try {
+      const res = await fetch('/api/certificates', {
+        method:'POST', headers:{'x-admin-token': authToken}, body: fd
+      });
+      if (!res.ok) throw new Error(await res.text());
+      toast('✅ Certificate uploaded successfully!');
+      // Reset form
+      ['f-title','f-issuer','f-date','f-link'].forEach(id => document.getElementById(id).value='');
+      document.getElementById('f-image').value='';
+      document.getElementById('file-name-display').textContent = 'No file chosen';
+      loadCerts();
+    } catch (err) {
+      toast('❌ Upload failed: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Upload Certificate 🚀';
+    }
+  }
+
+  // ── Delete ───────────────────────────────────────────────────────────────
+  async function deleteCert(id, btn) {
+    if (!confirm('Delete this certificate? This cannot be undone.')) return;
+    btn.disabled = true; btn.textContent = 'Deleting…';
+    try {
+      const res = await fetch('/api/certificates/' + id, {
+        method:'DELETE', headers:{'x-admin-token': authToken}
+      });
+      if (!res.ok) throw new Error();
+      toast('🗑️ Certificate deleted.');
+      document.getElementById('cert-' + id)?.remove();
+      const total = parseInt(document.getElementById('st-total').textContent) - 1;
+      document.getElementById('st-total').textContent = total;
+    } catch {
+      toast('❌ Could not delete certificate.', 'error');
+      btn.disabled = false; btn.textContent = '🗑️ Delete';
+    }
+  }
+
+  // ── Portfolio Text Editor ────────────────────────────────────────────────
+  async function loadPortfolioText() {
+    try {
+      const res  = await fetch('/api/content');
+      if (!res.ok) return;
+      const d = await res.json();
+      if (d.heroSub)       document.getElementById('te-sub').value          = d.heroSub;
+      if (d.heroTagline)   document.getElementById('te-tagline').value       = d.heroTagline;
+      if (d.about)         document.getElementById('te-about').value         = d.about;
+      if (d.skills) {
+        if (d.skills.html   != null) document.getElementById('te-skill-html').value   = d.skills.html;
+        if (d.skills.java   != null) document.getElementById('te-skill-java').value   = d.skills.java;
+        if (d.skills.python != null) document.getElementById('te-skill-python').value = d.skills.python;
+        if (d.skills.ml     != null) document.getElementById('te-skill-ml').value     = d.skills.ml;
+        if (d.skills.video  != null) document.getElementById('te-skill-video').value  = d.skills.video;
+      }
+      if (d.streak != null) document.getElementById('te-streak').value = d.streak;
+      if (d.projects && d.projects[0]) {
+        document.getElementById('te-proj1-title').value = d.projects[0].title || '';
+        document.getElementById('te-proj1-desc').value  = d.projects[0].desc  || '';
+      }
+      if (d.projects && d.projects[1]) {
+        document.getElementById('te-proj2-title').value = d.projects[1].title || '';
+        document.getElementById('te-proj2-desc').value  = d.projects[1].desc  || '';
+      }
+    } catch(e) { console.warn('Could not load content', e); }
+  }
+
+  async function savePortfolioText() {
+    const btn = document.getElementById('save-text-btn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+
+    const payload = {
+      heroSub:     document.getElementById('te-sub').value.trim(),
+      heroTagline: document.getElementById('te-tagline').value.trim(),
+      about:       document.getElementById('te-about').value.trim(),
+      skills: {
+        html:   parseInt(document.getElementById('te-skill-html').value)   || 80,
+        java:   parseInt(document.getElementById('te-skill-java').value)   || 65,
+        python: parseInt(document.getElementById('te-skill-python').value) || 60,
+        ml:     parseInt(document.getElementById('te-skill-ml').value)     || 45,
+        video:  parseInt(document.getElementById('te-skill-video').value)  || 75,
+      },
+      streak: parseInt(document.getElementById('te-streak').value) || 27,
+      projects: [
+        { title: document.getElementById('te-proj1-title').value.trim(), desc: document.getElementById('te-proj1-desc').value.trim() },
+        { title: document.getElementById('te-proj2-title').value.trim(), desc: document.getElementById('te-proj2-desc').value.trim() },
+      ]
+    };
+
+    try {
+      const res = await fetch('/api/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': authToken },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error();
+      toast('✅ Portfolio text saved! Refresh the site to see changes.');
+    } catch {
+      toast('❌ Failed to save text.', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = '💾 Save Changes';
+    }
+  }
+</script>
+</body>
+</html>

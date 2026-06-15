@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chirag Varshney | Growth Dashboard</title>
+  <meta name="description" content="Portfolio of Chirag Varshney – GLA University student, DSA practitioner, ML explorer, and video editor.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+    :root {
+      --sky:   #38bdf8;
+      --blue:  #2563eb;
+      --bg1:   #0f172a;
+      --bg2:   #020617;
+      --glass: rgba(255,255,255,.07);
+      --easy:  #22c55e;
+      --med:   #f59e0b;
+      --hard:  #ef4444;
+    }
+
+    body { background: radial-gradient(circle at 20% 0%, #0c2340, var(--bg2) 60%); color:#fff; overflow-x:hidden; }
+
+    /* ── ANIMATED CANVAS BACKGROUND ── */
+    #bg-canvas {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      z-index: 0; pointer-events: none;
+    }
+
+    /* ── FLOATING ORBS ── */
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(80px);
+      animation: floatOrb 12s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    .orb1 { width:300px; height:300px; background:rgba(56,189,248,.12); top:-80px; left:-80px; animation-delay:0s; }
+    .orb2 { width:400px; height:400px; background:rgba(37,99,235,.10); bottom:-100px; right:-100px; animation-delay:-6s; }
+    .orb3 { width:200px; height:200px; background:rgba(139,92,246,.08); top:40%; left:60%; animation-delay:-3s; }
+    @keyframes floatOrb {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(30px,-40px) scale(1.08); }
+      66% { transform: translate(-20px,20px) scale(.95); }
+    }
+
+    /* All content above canvas */
+    nav, .hero, section, footer { position: relative; z-index: 1; }
+
+    /* ── NAVBAR ── */
+    nav {
+      position:fixed; top:0; width:100%; z-index:100;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:14px 40px;
+      background:rgba(2,6,23,.7); backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(56,189,248,.15);
+    }
+    .nav-logo { font-weight:700; font-size:1.2rem; background:linear-gradient(90deg,var(--sky),var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .nav-links { display:flex; gap:28px; list-style:none; }
+    .nav-links a { color:rgba(255,255,255,.7); text-decoration:none; font-size:.9rem; transition:.3s; }
+    .nav-links a:hover { color:var(--sky); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
+      padding:100px 20px 60px;
+    }
+    .profile-ring {
+      width:170px; height:170px; border-radius:50%; padding:4px;
+      background:conic-gradient(var(--sky), var(--blue), var(--sky));
+      animation:spin 8s linear infinite; cursor:pointer; margin-bottom:32px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .profile-inner {
+      width:100%; height:100%; border-radius:50%;
+      background:var(--bg2); display:flex; align-items:center; justify-content:center;
+      animation:spin 8s linear infinite reverse; /* counter-spin so photo stays still */
+    }
+    .profile-inner img { width:calc(100% - 8px); height:calc(100% - 8px); border-radius:50%; object-fit:cover; }
+    .hero h1 { font-size:clamp(2.4rem,6vw,4.5rem); font-weight:900; letter-spacing:-1px; line-height:1.1;
+      background:linear-gradient(135deg,#fff 40%,var(--sky)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .hero .sub { font-size:1.15rem; opacity:.75; margin-top:10px; }
+    .hero .tagline { font-size:1rem; opacity:.5; margin-top:6px; }
+    .hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:30px; }
+    .btn-primary {
+      padding:13px 28px; border-radius:30px; text-decoration:none; color:#fff; font-weight:600;
+      background:linear-gradient(135deg,var(--sky),var(--blue));
+      box-shadow:0 0 24px rgba(56,189,248,.35); transition:.3s;
+    }
+    .btn-primary:hover { transform:translateY(-3px); box-shadow:0 0 40px rgba(56,189,248,.6); }
+    .btn-ghost {
+      padding:13px 28px; border-radius:30px; text-decoration:none; color:var(--sky); font-weight:600;
+      border:1px solid rgba(56,189,248,.4); transition:.3s;
+    }
+    .btn-ghost:hover { background:rgba(56,189,248,.1); transform:translateY(-3px); }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-down { margin-top:48px; display:flex; flex-direction:column; align-items:center; gap:6px; opacity:.4; animation:bounce 2s infinite; }
+    .scroll-down span { width:2px; height:40px; background:linear-gradient(to bottom,var(--sky),transparent); border-radius:2px; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+    /* ── GLASS SECTIONS ── */
+    .glass {
+      width:min(85%,960px); margin:60px auto; padding:48px;
+      border-radius:24px; background:var(--glass);
+      backdrop-filter:blur(18px); border:1px solid rgba(255,255,255,.08);
+      transform:translateY(50px); opacity:0; transition:.8s ease;
+    }
+    .glass.show { transform:translateY(0); opacity:1; }
+    .section-title { font-size:1.6rem; font-weight:700; color:var(--sky); margin-bottom:28px; display:flex; align-items:center; gap:10px; }
+    .section-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(56,189,248,.4),transparent); }
+
+    /* ── SKILLS ── */
+    .skill { margin-bottom:22px; }
+    .skill-label { display:flex; justify-content:space-between; margin-bottom:8px; font-size:.9rem; }
+    .bar { width:100%; height:10px; background:rgba(255,255,255,.1); border-radius:10px; overflow:hidden; }
+    .progress { height:100%; width:0; background:linear-gradient(90deg,var(--sky),var(--blue)); border-radius:10px; transition:1.4s cubic-bezier(.25,.46,.45,.94); }
+
+    /* ── LEETCODE STATS ── */
+    #lc-loading { text-align:center; padding:40px; opacity:.5; }
+    .lc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+    .lc-card {
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+      border-radius:16px; padding:24px; text-align:center; transition:.3s;
+    }
+    .lc-card:hover { transform:translateY(-6px); border-color:rgba(56,189,248,.4); box-shadow:0 8px 32px rgba(56,189,248,.15); }
+    .lc-card .lc-num { font-size:2.8rem; font-weight:900; line-height:1; }
+    .lc-card .lc-label { font-size:.85rem; opacity:.6; margin-top:6px; }
+    .lc-easy  .lc-num { color:var(--easy); }
+    .lc-med   .lc-num { color:var(--med); }
+    .lc-hard  .lc-num { color:var(--hard); }
+    .lc-total .lc-num { color:var(--sky); font-size:3.4rem; }
+    .lc-streak .lc-num { color:#f97316; font-size:3rem; }
+
+    /* Donut rings */
+    .ring-wrap { display:flex; justify-content:center; margin-bottom:10px; }
+    .ring { transform:rotate(-90deg); }
+    .ring-bg { fill:none; stroke:rgba(255,255,255,.08); }
+    .ring-fill { fill:none; stroke-linecap:round; stroke-dasharray:220; stroke-dashoffset:220; transition:stroke-dashoffset 1.5s ease; }
+
+    .lc-last-updated { font-size:.75rem; opacity:.35; text-align:right; margin-top:20px; }
+    .lc-profile-btn { display:inline-flex; align-items:center; gap:8px; margin-top:24px; padding:10px 22px; border-radius:30px; text-decoration:none; color:#fff; font-size:.9rem; background:linear-gradient(135deg,var(--sky),var(--blue)); box-shadow:0 0 18px rgba(56,189,248,.3); transition:.3s; }
+    .lc-profile-btn:hover { transform:translateY(-3px); box-shadow:0 0 30px rgba(56,189,248,.5); }
+    .lc-error { text-align:center; color:var(--hard); padding:20px; }
+
+    /* ── PROJECTS ── */
+    .project-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
+    .project-card {
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+      border-radius:16px; padding:24px; transition:.3s;
+    }
+    .project-card:hover { transform:translateY(-6px); border-color:rgba(56,189,248,.4); box-shadow:0 8px 32px rgba(56,189,248,.15); }
+    .project-icon { font-size:2rem; margin-bottom:12px; }
+    .project-card h3 { font-size:1rem; font-weight:600; margin-bottom:6px; }
+    .project-card p { font-size:.85rem; opacity:.55; line-height:1.6; }
+
+    /* ── SOCIAL ── */
+    .social-grid { display:flex; flex-wrap:wrap; gap:14px; }
+    .social-btn {
+      display:flex; align-items:center; gap:8px; padding:12px 22px;
+      border-radius:30px; text-decoration:none; color:#fff; font-size:.9rem;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); transition:.3s;
+    }
+    .social-btn:hover { background:linear-gradient(135deg,var(--sky),var(--blue)); border-color:transparent; transform:translateY(-3px); }
+
+    /* ── FOOTER ── */
+    footer { text-align:center; padding:40px 20px; opacity:.4; font-size:.85rem; }
+
+    /* ── MODAL ── */
+    .modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; justify-content:center; align-items:center; z-index:200; backdrop-filter:blur(4px); }
+    .modal.open { display:flex; }
+    .modal-box {
+      background:#0e1c30; border:1px solid rgba(56,189,248,.25); border-radius:24px;
+      padding:44px; max-width:460px; width:90%; position:relative;
+      animation:popUp .35s ease;
+    }
+    @keyframes popUp { from{transform:scale(.85);opacity:0} to{transform:scale(1);opacity:1} }
+    .modal-close { position:absolute; top:16px; right:20px; font-size:1.4rem; cursor:pointer; opacity:.5; transition:.2s; }
+    .modal-close:hover { opacity:1; }
+    .modal-box h2 { color:var(--sky); margin-bottom:20px; }
+    .modal-box ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .modal-box ul li {
+      background:rgba(255,255,255,.06); border-radius:10px; padding:12px 16px;
+      opacity:0; animation:slideIn .4s ease forwards;
+    }
+    .modal-box ul li:nth-child(1){animation-delay:.1s}
+    .modal-box ul li:nth-child(2){animation-delay:.2s}
+    .modal-box ul li:nth-child(3){animation-delay:.3s}
+    .modal-box ul li:nth-child(4){animation-delay:.4s}
+    @keyframes slideIn { from{transform:translateX(-16px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:600px) {
+      nav { padding:12px 20px; }
+      .nav-links { gap:16px; }
+      .glass { padding:28px 20px; }
+    }
+
+    /* ── TYPING CURSOR ── */
+    .typing-text::after {
+      content: '|'; color: var(--sky);
+      animation: blink .7s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── PROFILE PULSE RING ── */
+    @keyframes pulseRing {
+      0%   { box-shadow: 0 0 0 0 rgba(56,189,248,.6); }
+      70%  { box-shadow: 0 0 0 20px rgba(56,189,248,0); }
+      100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); }
+    }
+    .profile-ring { animation: spin 8s linear infinite, pulseRing 2.5s ease-out infinite; }
+
+    /* ── STAGGER CARD ANIMATIONS ── */
+    .project-card, .lc-card {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease, border-color .3s, box-shadow .3s;
+    }
+    .project-card.visible, .lc-card.visible { opacity:1; transform:translateY(0); }
+
+    /* ── SHIMMER SKILL BAR ── */
+    .progress::after {
+      content:''; position:absolute; top:0; left:-40%; width:30%; height:100%;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+      animation: shimmer 2.5s infinite;
+    }
+    .bar { position:relative; }
+    @keyframes shimmer { 0%{left:-40%} 100%{left:120%} }
+
+    /* ── HERO FADE IN ── */
+    .hero h1, .hero .sub, .hero .tagline, .hero-btns {
+      opacity: 0; transform: translateY(20px);
+      animation: heroFadeIn .8s ease forwards;
+    }
+    .hero h1         { animation-delay: .1s; }
+    .hero .sub       { animation-delay: .35s; }
+    .hero .tagline   { animation-delay: .55s; }
+    .hero-btns       { animation-delay: .75s; }
+    @keyframes heroFadeIn { to { opacity:1; transform:translateY(0); } }
+
+    /* ── NAV GLOW ON HOVER ── */
+    .nav-links a { position:relative; }
+    .nav-links a::after {
+      content:''; position:absolute; left:0; bottom:-3px;
+      width:0; height:2px; background:var(--sky); border-radius:2px;
+      transition:.3s ease;
+    }
+    .nav-links a:hover::after { width:100%; }
+
+    /* ── SOCIAL BUTTON POP ── */
+    .social-btn { transition:.3s cubic-bezier(.34,1.56,.64,1); }
+    .social-btn:hover { transform:translateY(-4px) scale(1.06); }
+  </style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">CV.</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#dsa">DSA</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="certificates.html">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="profile-ring" onclick="openAchievements()" title="Click for Achievements 🏆">
+    <div class="profile-inner">
+      <img src="profile.jpeg" alt="Chirag Varshney">
+    </div>
+  </div>
+  <h1>CHIRAG VARSHNEY</h1>
+  <p class="sub" id="hero-sub">Student · GLA University · DSA | ML | Video Editing</p>
+  <p class="tagline typing-text" id="hero-tagline">Progress > Perfection 🚀</p>
+  <div class="hero-btns">
+    <a href="#dsa" class="btn-primary">View DSA Stats 📊</a>
+    <a href="certificates.html" class="btn-ghost">My Certificates 📜</a>
+  </div>
+  <div class="scroll-down"><span></span></div>
+</section>
+
+<!-- ABOUT -->
+<section class="glass reveal" id="about">
+  <h2 class="section-title">About Me</h2>
+  <p id="about-text" style="line-height:1.9;opacity:.85">
+    I am a disciplined learner focused on building strong foundations in programming and
+    problem-solving. I regularly practice DSA on LeetCode using <strong>Java</strong> and
+    <strong>Python</strong>, and I am exploring <strong>Machine Learning</strong>.
+    Alongside coding, I work as a <strong>video editor</strong>, creating engaging content
+    for social media and projects.
+  </p>
+</section>
+
+<!-- SKILLS -->
+<section class="glass reveal" id="skills">
+  <h2 class="section-title">Skills</h2>
+  <div class="skill">
+    <div class="skill-label"><span>HTML &amp; CSS</span><span>80%</span></div>
+    <div class="bar"><div class="progress" data-width="80%"></div></div>
+  </div>
+  <div class="skill">
+    <div class="skill-label"><span>Java</span><span>65%</span></div>
+    <div class="bar"><div class="progress" data-width="65%"></div></div>
+  </div>
+  <div class="skill">
+    <div class="skill-label"><span>Python</span><span>60%</span></div>
+    <div class="bar"><div class="progress" data-width="60%"></div></div>
+  </div>
+  <div class="skill">
+    <div class="skill-label"><span>Machine Learning</span><span>45%</span></div>
+    <div class="bar"><div class="progress" data-width="45%"></div></div>
+  </div>
+  <div class="skill">
+    <div class="skill-label"><span>Video Editing</span><span>75%</span></div>
+    <div class="bar"><div class="progress" data-width="75%"></div></div>
+  </div>
+</section>
+
+<!-- DSA / LEETCODE LIVE -->
+<section class="glass reveal" id="dsa">
+  <h2 class="section-title">DSA Progress &amp; LeetCode Stats</h2>
+  <div id="lc-loading">⏳ Fetching live stats from LeetCode…</div>
+  <div id="lc-content" style="display:none">
+    <div class="lc-grid">
+
+      <!-- Total Solved -->
+      <div class="lc-card lc-total">
+        <div class="lc-num" id="lc-total">—</div>
+        <div class="lc-label">Total Problems Solved</div>
+      </div>
+
+      <!-- Easy -->
+      <div class="lc-card lc-easy">
+        <div class="ring-wrap">
+          <svg class="ring" width="72" height="72" viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="30" stroke-width="7"/>
+            <circle id="ring-easy" class="ring-fill" cx="36" cy="36" r="30" stroke-width="7" stroke="#22c55e"/>
+          </svg>
+        </div>
+        <div class="lc-num" id="lc-easy">—</div>
+        <div class="lc-label">Easy Solved</div>
+      </div>
+
+      <!-- Medium -->
+      <div class="lc-card lc-med">
+        <div class="ring-wrap">
+          <svg class="ring" width="72" height="72" viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="30" stroke-width="7"/>
+            <circle id="ring-med" class="ring-fill" cx="36" cy="36" r="30" stroke-width="7" stroke="#f59e0b"/>
+          </svg>
+        </div>
+        <div class="lc-num" id="lc-med">—</div>
+        <div class="lc-label">Medium Solved</div>
+      </div>
+
+      <!-- Hard -->
+      <div class="lc-card lc-hard">
+        <div class="ring-wrap">
+          <svg class="ring" width="72" height="72" viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="30" stroke-width="7"/>
+            <circle id="ring-hard" class="ring-fill" cx="36" cy="36" r="30" stroke-width="7" stroke="#ef4444"/>
+          </svg>
+        </div>
+        <div class="lc-num" id="lc-hard">—</div>
+        <div class="lc-label">Hard Solved</div>
+      </div>
+
+      <!-- Current Streak -->
+      <div class="lc-card lc-streak">
+        <div class="lc-num" id="lc-streak">—</div>
+        <div class="lc-label">🔥 Current Streak (days)</div>
+      </div>
+
+      <!-- Max Streak -->
+      <div class="lc-card lc-streak">
+        <div class="lc-num" id="lc-max-streak">—</div>
+        <div class="lc-label">⚡ Max Streak (days)</div>
+      </div>
+
+      <!-- Ranking -->
+      <div class="lc-card">
+        <div class="lc-num" id="lc-rank" style="color:#a78bfa; font-size:2rem;">—</div>
+        <div class="lc-label">Global Ranking 🌍</div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:28px;">
+      <a href="https://leetcode.com/u/Chiragvarshney_official24/" target="_blank" class="lc-profile-btn">
+        🔗 View Full LeetCode Profile
+      </a>
+    </div>
+    <p class="lc-last-updated" id="lc-last-updated"></p>
+  </div>
+  <div id="lc-error" class="lc-error" style="display:none">⚠️ Could not load live stats. <a href="https://leetcode.com/u/Chiragvarshney_official24/" target="_blank" style="color:var(--sky)">View on LeetCode</a></div>
+</section>
+
+<!-- PROJECTS -->
+<section class="glass reveal" id="projects">
+  <h2 class="section-title">Projects</h2>
+  <div class="project-grid">
+    <div class="project-card">
+      <div class="project-icon">🌐</div>
+      <h3>Personal Portfolio</h3>
+      <p>This very website — animated glassmorphism design, live LeetCode stats, deployed on Vercel.</p>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🧮</div>
+      <h3>DSA Practice (Java)</h3>
+      <p>Structured problem-solving on arrays, trees, graphs, DP and more using Java.</p>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🤖</div>
+      <h3>ML Practice Models</h3>
+      <p>Hands-on experiments with scikit-learn, pandas, and numpy for classification &amp; regression.</p>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🎬</div>
+      <h3>Video Editing</h3>
+      <p>Reels, short-form content, and social media videos crafted with creative visual storytelling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="glass reveal" id="contact">
+  <h2 class="section-title">Connect With Me</h2>
+  <div class="social-grid">
+    <a href="https://github.com/Chiragvarshney11" target="_blank" class="social-btn">🐙 GitHub</a>
+    <a href="https://www.linkedin.com/in/chirag-varshney-29aa55336/" target="_blank" class="social-btn">💼 LinkedIn</a>
+    <a href="https://www.instagram.com/iamcv.07/" target="_blank" class="social-btn">📸 Instagram</a>
+    <a href="mailto:cvarshney609@gmail.com" class="social-btn">✉️ Gmail</a>
+    <a href="https://leetcode.com/u/Chiragvarshney_official24/" target="_blank" class="social-btn">🧩 LeetCode</a>
+  </div>
+</section>
+
+<footer>© 2026 Chirag Varshney · Built with Discipline 💪 &nbsp;|&nbsp; <a href="/admin.html" style="color:var(--sky);opacity:.4;text-decoration:none;font-size:.75rem">Admin</a></footer>
+
+<!-- ACHIEVEMENTS MODAL -->
+<div id="achievementModal" class="modal">
+  <div class="modal-box">
+    <span class="modal-close" onclick="closeAchievements()">✕</span>
+    <h2>Achievements 🏆</h2>
+    <ul>
+      <li>🧩 <strong id="ach-solved">199</strong> LeetCode problems solved</li>
+      <li>🔥 Current coding streak loading…</li>
+      <li>🚀 Portfolio deployed on Vercel</li>
+      <li>📜 Certified in multiple programming tracks</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // ── Modal ──────────────────────────────────────────────────────────────
+  function openAchievements() {
+    const m = document.getElementById('achievementModal');
+    m.classList.add('open');
+    m.querySelectorAll('li').forEach(li => { li.style.animation='none'; li.offsetHeight; li.style.animation=''; });
+  }
+  function closeAchievements() { document.getElementById('achievementModal').classList.remove('open'); }
+  document.getElementById('achievementModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeAchievements(); });
+
+  // ── Scroll reveals + skill bars ────────────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        entry.target.querySelectorAll('.progress').forEach(p => { p.style.width = p.dataset.width; });
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Donut ring helper ──────────────────────────────────────────────────
+  function setRing(id, pct) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const circumference = 2 * Math.PI * 30; // r=30 → ~188.5
+    el.style.strokeDasharray  = circumference;
+    el.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+  }
+
+  // ── Live LeetCode stats ────────────────────────────────────────────────
+  async function fetchLCStats() {
+    try {
+      const res  = await fetch('/api/leetcode-stats');
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+
+      document.getElementById('lc-total').textContent  = data.totalSolved;
+      document.getElementById('lc-easy').textContent   = data.easySolved;
+      document.getElementById('lc-med').textContent    = data.mediumSolved;
+      document.getElementById('lc-hard').textContent   = data.hardSolved;
+      document.getElementById('lc-streak').textContent = data.currentStreak;
+      document.getElementById('lc-max-streak').textContent = data.maxStreak;
+      document.getElementById('lc-rank').textContent   = '#' + data.ranking.toLocaleString();
+
+      // Donut rings (% solved of that difficulty)
+      setTimeout(() => {
+        setRing('ring-easy', (data.easySolved / data.totalEasy) * 100);
+        setRing('ring-med',  (data.mediumSolved / data.totalMedium) * 100);
+        setRing('ring-hard', (data.hardSolved / data.totalHard) * 100);
+      }, 400);
+
+      // Update achievement modal
+      document.getElementById('ach-solved').textContent = data.totalSolved;
+
+      document.getElementById('lc-last-updated').textContent =
+        'Last updated: ' + new Date(data.lastUpdated).toLocaleString();
+
+      document.getElementById('lc-loading').style.display  = 'none';
+      document.getElementById('lc-content').style.display  = 'block';
+    } catch (err) {
+      console.error(err);
+      document.getElementById('lc-loading').style.display = 'none';
+      document.getElementById('lc-error').style.display   = 'block';
+    }
+  }
+
+  fetchLCStats();
+  // Refresh every 30 minutes while tab is open
+  setInterval(fetchLCStats, 30 * 60 * 1000);
+
+  // ── STAGGER CARDS (project + lc-cards) ─────────────────────────────────
+  const cardObserver = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.project-card, .lc-card').forEach(c => cardObserver.observe(c));
+
+</script>
+
+<!-- CANVAS PARTICLE BACKGROUND -->
+<script>
+  (function() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', () => { resize(); init(); });
+
+    function Particle() {
+      this.x  = Math.random() * W;
+      this.y  = Math.random() * H;
+      this.r  = Math.random() * 1.6 + 0.3;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.a  = Math.random() * 0.6 + 0.1;
+    }
+
+    function init() {
+      const count = Math.floor((W * H) / 9000);
+      particles = Array.from({ length: count }, () => new Particle());
+    }
+    init();
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw lines between close particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(56,189,248,${0.08 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.6;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw particles
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(56,189,248,${p.a})`;
+        ctx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      });
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
+</body>
+</html>
