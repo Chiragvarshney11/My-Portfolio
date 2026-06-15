@@ -43,7 +43,7 @@ async function fetchLeetCodeCalendar(username) {
   `;
 
   try {
-    const response = await fetch("https://leetcode.com/graphql", {
+    const response = await fetch("/api/leetcode", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
