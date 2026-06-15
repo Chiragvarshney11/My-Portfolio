@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chirag | Growth Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #0f172a, #020617);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* PROFILE PHOTO */
+        .profile-pic {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            margin-bottom: 40px;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .scroll-photo {
+            transition: transform .4s ease, box-shadow .4s ease;
+        }
+
+        .scroll-photo.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 30px #38bdf8;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            text-shadow: 0 0 25px #38bdf8;
+            margin-top: 15px;
+        }
+
+        .hero h4 {
+            font-size: 2rem;
+            opacity: .9;
+        }
+
+        .hero p {
+            opacity: .8
+        }
+
+        /* GLASS */
+        .glass {
+            width: 80%;
+            margin: 60px auto;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(14px);
+            transform: translateY(40px);
+            opacity: 0;
+            transition: 1s ease;
+        }
+
+        .glass.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        h2 {
+            color: #38bdf8;
+            margin-bottom: 20px
+        }
+
+        /* SKILLS */
+        .skill {
+            margin-bottom: 20px
+        }
+
+        .bar {
+            width: 100%;
+            height: 12px;
+            background: #020617;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #38bdf8, #2563eb);
+            transition: 1.5s ease;
+        }
+
+        /* STATS */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 40px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .stats h3 {
+            font-size: 2.5rem;
+            color: #38bdf8;
+        }
+
+        /* MODAL */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, .1);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        /* SOCIAL */
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            padding: 12px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            opacity: .7;
+        }
+
+        /* MODAL ANIMATION */
+        .modal-content {
+            animation: popUp 0.4s ease;
+        }
+
+        /* ACHIEVEMENT LIST ANIMATION */
+        .modal-content ul li {
+            opacity: 0;
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .modal-content ul li:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .modal-content ul li:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .modal-content ul li:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        /* KEYFRAMES */
+        @keyframes popUp {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* LEETCODE LINK */
+        .lc-link {
+            color: #38bdf8;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .lc-link:hover {
+            color: #fff;
+            text-shadow: 0 0 15px #38bdf8;
+            transform: scale(1.05);
+            display: inline-block;
+        }
+
+        .cert-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .cert-btn {
+            padding: 14px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+            transition: 0.3s ease;
+        }
+
+        .cert-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cert-btn-wrapper">
+        <a href="certificates.html" class="cert-btn">View Certificates 📜</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="profile-pic scroll-photo" onclick="openAchievements()">
+            <img src="profile.jpeg" alt="Chirag Varshney">
+        </div>
+        <h1>CHIRAG VARSHNEY</h1>
+        <h4>Student of GLA University</h4>
+        <p>Progress > Perfection 🚀</p>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="glass reveal">
+        <h2>About Me</h2>
+        <p>
+            I am a disciplined learner focused on building strong foundations
+            in programming and problem-solving. I regularly practice DSA on
+            LeetCode using Java and Python, and I am exploring Machine Learning.
+            Alongside coding, I also work as a video editor, creating engaging
+            content for social media and projects.
+        </p>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="glass reveal">
+        <h2>Skills</h2>
+        <div class="skill">HTML & CSS<div class="bar">
+                <div class="progress" data-width="80%"></div>
+            </div>
+        </div>
+        <div class="skill">Java<div class="bar">
+                <div class="progress" data-width="65%"></div>
+            </div>
+        </div>
+        <div class="skill">Python<div class="bar">
+                <div class="progress" data-width="60%"></div>
+            </div>
+        </div>
+        <div class="skill">Machine Learning<div class="bar">
+                <div class="progress" data-width="45%"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="glass reveal">
+        <h2>Projects</h2>
+        <ul>
+            <li>🚀 Personal Portfolio Website (Live on Vercel)</li>
+            <li>🧮 DSA Practice Programs (Java)</li>
+            <li>🤖 Machine Learning Practice Models</li>
+            <li>🎬 Video Editing Projects & Reels</li>
+        </ul>
+    </section>
+
+    <!-- DSA STATS -->
+    <section class="glass reveal">
+        <h2>DSA Progress</h2>
+        <div class="stats">
+            <div>
+                <h3>
+                    <a href="https://leetcode.com/u/Chiragvarshney_official24/" target="_blank" class="lc-link"> LC </a>
+                </h3>
+                <p> Check Profile Here </p>
+
+            </div>
+
+            <div>
+                <h3 id="streak">26</h3>
+                <p>Max Coding Streak 🔥</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="glass reveal">
+        <h2>Connect With Me</h2>
+        <div class="social-links">
+            <a href="https://github.com/Chiragvarshney11" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/chirag-varshney-29aa55336/" target="_blank">LinkedIn</a>
+            <a href="https://www.instagram.com/iamcv.07/" target="_blank">Instagram</a>
+            <a href="mailto:cvarshney609@gmail.com">Gmail</a>
+        </div>
+    </section>
+
+    <footer>© 2026 Chirag | Built with Discipline 💪</footer>
+
+    <!-- ACHIEVEMENTS MODAL -->
+    <div id="achievementModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAchievements()">×</span>
+            <h2>Achievements 🏆</h2>
+            <ul>
+                <li>🔥 26+ days coding consistency</li>
+                <li>💻 65+ LeetCode problems solved</li>
+                <li>🚀 Portfolio deployed on Vercel</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        /* MODAL */
+        function openAchievements() {
+            document.getElementById("achievementModal").style.display = "flex";
+        }
+        function closeAchievements() {
+            document.getElementById("achievementModal").style.display = "none";
+        }
+
+        /* SCROLL EFFECTS */
+        const reveals = document.querySelectorAll(".reveal");
+        const bars = document.querySelectorAll(".progress");
+        const photo = document.querySelector(".scroll-photo");
+
+        window.addEventListener("scroll", () => {
+            reveals.forEach(sec => {
+                if (sec.getBoundingClientRect().top < window.innerHeight - 100) {
+                    sec.classList.add("show");
+                }
+            });
+            bars.forEach(bar => {
+                if (bar.getBoundingClientRect().top < window.innerHeight) {
+                    bar.style.width = bar.dataset.width;
+                }
+            });
+            if (window.scrollY > 80) {
+                photo.classList.add("active");
+            } else {
+                photo.classList.remove("active");
+            }
+        });
+        function openAchievements() {
+            const modal = document.getElementById("achievementModal");
+            modal.style.display = "flex";
+
+            // reset animations
+            const items = modal.querySelectorAll("li");
+            items.forEach(li => {
+                li.style.animation = "none";
+                li.offsetHeight; // reflow
+                li.style.animation = "";
+            });
+        }
+
+        /* MAX STREAK AUTO +1 DAILY */
+        /* ===== MAX STREAK (FINAL & CORRECT) ===== */
+
+        // Aaj jo number dikhana hai
+        const BASE_STREAK = 27;
+
+        // Aaj ki REAL date automatically le lo (no hardcode)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // START_DATE = Aaj
+        const START_DATE = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        );
+
+        // Difference (aaj = 0)
+        const diffDays = Math.floor(
+            (today - START_DATE) / (1000 * 60 * 60 * 24)
+        );
+
+        // Final streak
+        document.getElementById("streak").innerText = BASE_STREAK + diffDays;
+
+
+    </script>
+
+</body>
+
+</html>
+
