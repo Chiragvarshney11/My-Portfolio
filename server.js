@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const DATA_FILE    = path.join(__dirname, 'data', 'certificates.json');
 const CONTENT_FILE = path.join(__dirname, 'data', 'content.json');
 const UPLOADS_DIR  = path.join(__dirname, 'public', 'uploads');
-const ADMIN_PASS   = process.env.ADMIN_PASSWORD || 'Chiragvarshney@987';
+const ADMIN_PASS   = process.env.ADMIN_PASSWORD || '';
 const ADMIN_TOKEN  = 'cv-admin-secret-2026'; // simple static token for demo
 
 // ─── LeetCode cache ───────────────────────────────────────────────────────────
